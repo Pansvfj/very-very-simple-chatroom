@@ -14,4 +14,6 @@ extern const short msg_tail_len;
 
 char* pack_msg(msg *m);
 
+MSG_ANALYSIS_ERROR analysis_msg(const char *data, msg *m);
+
 #endif // PROTOCOL_H
