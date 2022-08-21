@@ -1,3 +1,18 @@
+How to run?
+
+server:
+
+    cd ./src/server
+
+    ./1
+
+client:
+
+    cd ./src/client
+
+    ./1
+
+
 # very-very-simple-chatroom
 It's very very simple exerciser.
 Use Qt creator coding。
