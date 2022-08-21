@@ -1,4 +1,7 @@
 #include "assist.h"
+#include "common_defines.h"
+
+
 #include <math.h> //gcc add -lm
 #include <assert.h>
 #include <string.h>
@@ -9,6 +12,13 @@
 
 char* my_itoa(int num)
 {
+   static char result[10];
+   if (num == 0){
+       result[0] = '0';
+       result[1] = '\0';
+       return result;
+   }
+
    char str[10];
    int natural_num =  (num >= 0) ? num : 0 - num;
    int i = 0;
@@ -19,7 +29,6 @@ char* my_itoa(int num)
        i++;
    }while(natural_num);
 
-   static char result[10];
    int j = 0;
    if (num < 0){
        result[j] = '-';
@@ -37,13 +46,13 @@ char* my_itoa(int num)
    return result;
 }
 
-int my_atoi(char *str)
+int my_atoi(const char *str)
 {
     if (str == NULL){
         return 0;
     }
     int len = strlen(str);
-    printf("len = %d\n", len);
+    //printf("len = %d\n", len);
     if (len == 0 || len > 10){
         assert(len != 0);
         return 0;
@@ -75,10 +84,11 @@ unsigned int get_unix_timestamp()
     return tv.tv_sec;
 }
 
-void get_current_datetime_str(char* out)
+char* get_current_datetime_str()
 {
-    if (out == NULL)
-        return;
+//    if (out == NULL)
+//        return;
+    static char str[DATE_LEN];
 
     time_t utc_time;
     struct tm *timenow;
@@ -87,7 +97,24 @@ void get_current_datetime_str(char* out)
     //timenow = gmtime(&utc_time); //0 time zone
     timenow = localtime(&utc_time); // local time zone
 
-    sprintf(out, "%d-%02d-%02d %02d:%02d:%02d", timenow->tm_year + 1900,
+    sprintf(str, "%d-%02d-%02d %02d:%02d:%02d", timenow->tm_year + 1900,
             timenow->tm_mon + 1,timenow->tm_mday,
             timenow->tm_hour, timenow->tm_min,timenow->tm_sec);
+
+    return str;
+}
+
+void logc(const char* str, char c)
+{
+    printf("%s:%c\n",str,c);
+}
+
+void logi(const char* str, int i)
+{
+    printf("%s:%d\n",str, i);
+}
+
+void logs(const char* str, const char *s)
+{
+    printf("%s:%s\n",str, s);
 }

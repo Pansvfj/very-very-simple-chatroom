@@ -1,4 +1,9 @@
+#include "server.h"
+#include "databases_manager.h"
+
+#if 0
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -6,13 +11,20 @@
 #include <arpa/inet.h>
 #include <ctype.h>
 #include <errno.h>
+#include <pthread.h>
+#endif
 
-#include "../Common/structs.h"
-#include "../Common/assist.h"
-#include "../Common/protocol.h"
+#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
+#if 1
+    if (!init_db()){
+        return 1;
+    }
+    start_up();
+#else
+//fork block single thread server-----------------+
     struct sockaddr_in server_address;
     struct sockaddr_in client_address;
     socklen_t client_address_len;
@@ -32,7 +44,7 @@ int main(int argc, char *argv[])
     bzero(&server_address, sizeof(server_address));
     server_address.sin_family = AF_INET;
     server_address.sin_addr.s_addr = htonl(INADDR_ANY);
-    server_address.sin_port = htons(10086);
+    server_address.sin_port = htons(55555);
 
     //bind
     bind (listen_fd, (struct sockaddr *)(&server_address), sizeof(server_address));
@@ -44,10 +56,6 @@ int main(int argc, char *argv[])
 
     bzero(buf, MAX_BUF_LEN);
     client_address_len = sizeof(client_address);
-    //acccept block....
-    puts("------acccept block------");
-
-
 
 
     while (true) {
@@ -91,10 +99,13 @@ int main(int argc, char *argv[])
                 }
                 write(connect_fd, buf, n);
             }
-
+            close(connect_fd);
+        }else{
+            printf("fork:--> %d\n", res);
         }
-        //close(connect_fd);
-    }
 
+    }
+//fork block single thread server-----------------+
+#endif
     return 0;
 }
