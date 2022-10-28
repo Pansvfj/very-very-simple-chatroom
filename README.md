@@ -14,7 +14,7 @@ client:
 
 
 # very-very-simple-chatroom
-It's very very simple exerciser.
+It's very very simple exerciser. Only use pure C in linux.
 Use Qt creator coding。
 
 date:2022-3-5
